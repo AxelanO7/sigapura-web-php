@@ -1,10 +1,10 @@
 <?php
-    session_start();
-    if($_SESSION['status'] !="sudah_login"){
-        header("location:../errorpage/403.php");
-    }
-    $page = "kuesioner";
-    include '../../config/config.php';
+session_start();
+if ($_SESSION['status'] != "sudah_login") {
+    header("location:../errorpage/403.php");
+}
+$page = "kuesioner";
+include '../../config/config.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kamus Enggano</title>
+    <title>Sigapura</title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
                 <div class="sidebar-header">
                     <div class="d-flex justify-content-between">
                         <div class="logo">
-                            <!-- <a href="index.php"><img src="../../skins/mazer/demo/assets/images/logo/kamus_enggano.png" alt="Logo" srcset=""></a> -->
+                            <a href="index.php"><img src="../../skins/mazer/demo/assets/images/logo/sigapura.png" alt="Logo" srcset=""></a>
                         </div>
                         <div class="toggler">
                             <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -42,7 +42,7 @@
                 </div>
                 <div class="sidebar-menu">
                     <?php
-                        include '../layout/menu.php';
+                    include '../layout/menu.php';
                     ?>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
@@ -79,171 +79,170 @@
                         </div>
                         <div class="card-body">
                             <?php
-								$idk = "KU004";
-                                $qcek = mysqli_query($koneksi,"SELECT * FROM z_kuisioner_user WHERE usr_id='".$dz["id"]."' AND kui_id='".$idk."' ");
-                                if($jml = mysqli_num_rows($qcek) >0 ){
-                                    echo  "<div class=\"alert alert-success text-center\">
+                            $idk = "KU004";
+                            $qcek = mysqli_query($koneksi, "SELECT * FROM z_kuisioner_user WHERE usr_id='" . $dz["id"] . "' AND kui_id='" . $idk . "' ");
+                            if ($jml = mysqli_num_rows($qcek) > 0) {
+                                echo  "<div class=\"alert alert-success text-center\">
                                             Terimakasih, Anda sudah berpartisipasi dalam penelitian ini. 
                                         </div>";
+                            } else {
+                                $flagp = 0;
+                                $flage = 0;
+                                $flagk = 0;
+                                $idk = "";
+                                $tessay = "";
+                                $k = 0;
+                                $idk = "KU004";
+                                $q = mysqli_query($koneksi, "SELECT * FROM z_kuisioner WHERE kui_id='" . $idk . "' ;");
+                                $d = mysqli_fetch_array($q);
+                                $kreteria = "<b>Kreteria Kategori Penilaian :</b><br />";
+                                $qkre = mysqli_query($koneksi, "SELECT * FROM z_kuisioner_kriteria WHERE kui_id='" . $d["kui_id"] . "' ORDER BY kuik_pilihan;");
+                                $colkre = "";
+                                $arrkreteria = array();
+                                $jmlkol = 2;
+                                while ($dkre = mysqli_fetch_array($qkre)) {
+                                    $kreteria .= $dkre["kuik_pilihan"] . ". " . $dkre["kuik_keterangan"] . "<br />";
+                                    $colkre .= "<td align=\"center\"><b>" . $dkre["kuik_pilihan"] . "</b></td>";
+                                    $arrkreteria[] = $dkre["kuik_pilihan"];
+                                    $jmlkol++;
+                                    $flagk = 1;
                                 }
-                                else {
-                                    $flagp = 0;
-                                    $flage = 0;
-                                    $flagk = 0;
-                                    $idk = "";
-                                    $tessay = "";
-                                    $k=0;
-									$idk = "KU004";
-                                    $q = mysqli_query($koneksi,"SELECT * FROM z_kuisioner WHERE kui_id='".$idk."' ;") ;
-                                    $d = mysqli_fetch_array($q);
-                                    $kreteria = "<b>Kreteria Kategori Penilaian :</b><br />";
-                                    $qkre = mysqli_query($koneksi,"SELECT * FROM z_kuisioner_kriteria WHERE kui_id='".$d["kui_id"]."' ORDER BY kuik_pilihan;") ;
-                                    $colkre = "";
-                                    $arrkreteria = array();
-                                    $jmlkol = 2;
-                                    while($dkre=mysqli_fetch_array($qkre)){
-                                        $kreteria .= $dkre["kuik_pilihan"].". ".$dkre["kuik_keterangan"]."<br />";
-                                        $colkre .="<td align=\"center\"><b>".$dkre["kuik_pilihan"]."</b></td>";
-                                        $arrkreteria[] = $dkre["kuik_pilihan"];
-                                        $jmlkol ++;
-                                        $flagk = 1;
-                                    }
-                                    $kreteria .="<br />";
-                                    $jmlcolspan = $jmlkol - 1;
-                                    
-                                    $tpertanyaan = "";
-                                    
-                                    $qs = mysqli_query($koneksi,"SELECT * FROM z_kuisioner_section WHERE kui_id='".$d["kui_id"]."' ");
-                                    $i=1;
-                                    $l = 0;
-                                    if($jmlks = mysqli_num_rows($qs)>0){
-                                        while($ds = mysqli_fetch_array($qs)){
-                                            $tpertanyaan .= "<table border=\"0\" width=\"100%\" cellspacing=\"1\" cellpadding=\"5\" bgcolor=\"#DDDDDD\">
+                                $kreteria .= "<br />";
+                                $jmlcolspan = $jmlkol - 1;
+
+                                $tpertanyaan = "";
+
+                                $qs = mysqli_query($koneksi, "SELECT * FROM z_kuisioner_section WHERE kui_id='" . $d["kui_id"] . "' ");
+                                $i = 1;
+                                $l = 0;
+                                if ($jmlks = mysqli_num_rows($qs) > 0) {
+                                    while ($ds = mysqli_fetch_array($qs)) {
+                                        $tpertanyaan .= "<table border=\"0\" width=\"100%\" cellspacing=\"1\" cellpadding=\"5\" bgcolor=\"#DDDDDD\">
                                                                 <tr bgcolor=\"#CCCCCC\">
                                                                     <td align=\"center\" width=\"5%\"><b>No</b></td>
                                                                     <td align=\"center\" width=\"80%\"><b>Pertanyaan</b></td>
-                                                                    ".$colkre."
+                                                                    " . $colkre . "
                                                                 </tr>";
-                                            if($i%2==1){
-                                                $bgcolor = "bgcolor=\"#FFFFFF\"";
-                                            }else{
-                                                $bgcolor = "bgcolor=\"#EEEEEE\"";
-                                            }
-                                            $tpertanyaan .="<tr ".$bgcolor.">
-                                                                <td colspan=\"".$jmlkol."\"><h4>".$ds["ks_name"]."</h4></td>
-                                                            </tr>";
-                                            $i++;
-                                            $qkp=mysqli_query($koneksi,"SELECT * FROM z_kuisioner_pertanyaan WHERE kui_id='".$d["kui_id"]."' AND ks_id='".$ds["ks_id"]."' ORDER BY kuip_urutan;") ;
-                                            while($dkp=mysqli_fetch_array($qkp)){
-                                                if($i%2==1){
-                                                    $bgcolor = "bgcolor=\"#FFFFFF\"";
-                                                }else{
-                                                    $bgcolor = "bgcolor=\"#EEEEEE\"";
-                                                }
-                                                if($dkp["kuip_tipe"]=="bobot"){
-                                                    $colkrej = "";
-                                                    $chk = "";
-                                                    foreach($arrkreteria as $kre){
-                                                        $colkrej .= "<td align=\"center\">
-                                                                    <input type=\"radio\" name=\"jp[".$l."]\" value=\"".$kre."\"/>
-                                                                    </td>";
-                                                        $chk = "";
-                                                    }
-                                                    $tpertanyaan .= "<tr ".$bgcolor.">
-                                                                        <td valign=\"top\" style=\"text-align:center\">".$dkp["kuip_urutan"]."</td>
-                                                                        <td valign=\"top\"><input type=\"hidden\" name=\"kuip_id[".$l."]\" value=\"".$dkp["kuip_id"]."\">".$dkp["kuip_pertanyaan"]."</td>
-                                                                        ".$colkrej."
-                                                                    </tr>";
-                                                    $i++;
-                                                    $l++;
-                                                    $flagp = 1;
-                                                }else{
-                                                    $tpertanyaan .= "<tr ".$bgcolor.">
-                                                                        <td align=\"center\" valign=\"center\" width=\"5%\"><p>".$dkp["kuip_urutan"].".</p>
-                                                                            <input type=\"hidden\" name=\"kuipe_id[]\" value=\"".$dkp["kuip_id"]."\"></td>
-                                                                        <td valign=\"center\" colspan=\"".$jmlcolspan."\">".$dkp["kuip_pertanyaan"]."</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td></td>
-                                                                        <td colspan=\"".$jmlcolspan."\" ><textarea id=\"essay[".$k."]\" name=\"essay[]\" cols=\"90%\" rows=\"4\"></textarea></td>
-                                                                    </tr>";
-                                                    $k++;
-                                                    $i++;
-                                                    $flagp = 1;
-                                                }				
-                                            }				
-                                            $tpertanyaan .= "</table>";
+                                        if ($i % 2 == 1) {
+                                            $bgcolor = "bgcolor=\"#FFFFFF\"";
+                                        } else {
+                                            $bgcolor = "bgcolor=\"#EEEEEE\"";
                                         }
-                                    }else{
-                                        $l = 0;
-                                        $qkp=mysqli_query($koneksi,"SELECT * FROM z_kuisioner_pertanyaan WHERE kui_id='".$d["kui_id"]."' ORDER BY kuip_urutan;") ;
-                                        while($dkp=mysqli_fetch_array($qkp)){
-                                            if($i%2==1){
+                                        $tpertanyaan .= "<tr " . $bgcolor . ">
+                                                                <td colspan=\"" . $jmlkol . "\"><h4>" . $ds["ks_name"] . "</h4></td>
+                                                            </tr>";
+                                        $i++;
+                                        $qkp = mysqli_query($koneksi, "SELECT * FROM z_kuisioner_pertanyaan WHERE kui_id='" . $d["kui_id"] . "' AND ks_id='" . $ds["ks_id"] . "' ORDER BY kuip_urutan;");
+                                        while ($dkp = mysqli_fetch_array($qkp)) {
+                                            if ($i % 2 == 1) {
                                                 $bgcolor = "bgcolor=\"#FFFFFF\"";
-                                            }else{
+                                            } else {
                                                 $bgcolor = "bgcolor=\"#EEEEEE\"";
                                             }
-                                            if($dkp["kuip_tipe"]=="bobot"){
+                                            if ($dkp["kuip_tipe"] == "bobot") {
                                                 $colkrej = "";
                                                 $chk = "";
-                                                foreach($arrkreteria as $kre){
+                                                foreach ($arrkreteria as $kre) {
                                                     $colkrej .= "<td align=\"center\">
-                                                                <input type=\"radio\" name=\"jp[".$l."]\" value=\"".$kre."\"/>
-                                                                </td>";
+                                                                    <input type=\"radio\" name=\"jp[" . $l . "]\" value=\"" . $kre . "\"/>
+                                                                    </td>";
                                                     $chk = "";
                                                 }
-                                                $tpertanyaan .= "<tr ".$bgcolor.">
-                                                                    <td valign=\"top\" style=\"text-align:center\">".$dkp["kuip_urutan"]."</td>
-                                                                    <td valign=\"top\"><input type=\"hidden\" name=\"kuip_id[".$l."]\" value=\"".$dkp["kuip_id"]."\">".$dkp["kuip_pertanyaan"]."</td>
-                                                                    ".$colkrej."
-                                                                </tr>";
+                                                $tpertanyaan .= "<tr " . $bgcolor . ">
+                                                                        <td valign=\"top\" style=\"text-align:center\">" . $dkp["kuip_urutan"] . "</td>
+                                                                        <td valign=\"top\"><input type=\"hidden\" name=\"kuip_id[" . $l . "]\" value=\"" . $dkp["kuip_id"] . "\">" . $dkp["kuip_pertanyaan"] . "</td>
+                                                                        " . $colkrej . "
+                                                                    </tr>";
                                                 $i++;
                                                 $l++;
                                                 $flagp = 1;
-                                            }else{
-                                                $tpertanyaan .= "<tr ".$bgcolor.">
-                                                                    <td align=\"center\" valign=\"center\" width=\"5%\"><p>".$dkp["kuip_urutan"].".</p>
-                                                                        <input type=\"hidden\" name=\"kuipe_id[]\" value=\"".$dkp["kuip_id"]."\"></td>
-                                                                    <td valign=\"center\" colspan=\"".$jmlcolspan."\">".$dkp["kuip_pertanyaan"]."</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td></td>
-                                                                    <td colspan=\"".$jmlcolspan."\" ><textarea id=\"essay[".$k."]\" name=\"essay[]\" cols=\"90%\" rows=\"4\"></textarea></td>
-                                                                </tr>";
+                                            } else {
+                                                $tpertanyaan .= "<tr " . $bgcolor . ">
+                                                                        <td align=\"center\" valign=\"center\" width=\"5%\"><p>" . $dkp["kuip_urutan"] . ".</p>
+                                                                            <input type=\"hidden\" name=\"kuipe_id[]\" value=\"" . $dkp["kuip_id"] . "\"></td>
+                                                                        <td valign=\"center\" colspan=\"" . $jmlcolspan . "\">" . $dkp["kuip_pertanyaan"] . "</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td colspan=\"" . $jmlcolspan . "\" ><textarea id=\"essay[" . $k . "]\" name=\"essay[]\" cols=\"90%\" rows=\"4\"></textarea></td>
+                                                                    </tr>";
                                                 $k++;
                                                 $i++;
                                                 $flagp = 1;
-                                            }	 
+                                            }
                                         }
-                                        $tpertanyaan = "<table border=\"0\" width=\"100%\" cellspacing=\"1\" cellpadding=\"5\" bgcolor=\"#DDDDDD\">
+                                        $tpertanyaan .= "</table>";
+                                    }
+                                } else {
+                                    $l = 0;
+                                    $qkp = mysqli_query($koneksi, "SELECT * FROM z_kuisioner_pertanyaan WHERE kui_id='" . $d["kui_id"] . "' ORDER BY kuip_urutan;");
+                                    while ($dkp = mysqli_fetch_array($qkp)) {
+                                        if ($i % 2 == 1) {
+                                            $bgcolor = "bgcolor=\"#FFFFFF\"";
+                                        } else {
+                                            $bgcolor = "bgcolor=\"#EEEEEE\"";
+                                        }
+                                        if ($dkp["kuip_tipe"] == "bobot") {
+                                            $colkrej = "";
+                                            $chk = "";
+                                            foreach ($arrkreteria as $kre) {
+                                                $colkrej .= "<td align=\"center\">
+                                                                <input type=\"radio\" name=\"jp[" . $l . "]\" value=\"" . $kre . "\"/>
+                                                                </td>";
+                                                $chk = "";
+                                            }
+                                            $tpertanyaan .= "<tr " . $bgcolor . ">
+                                                                    <td valign=\"top\" style=\"text-align:center\">" . $dkp["kuip_urutan"] . "</td>
+                                                                    <td valign=\"top\"><input type=\"hidden\" name=\"kuip_id[" . $l . "]\" value=\"" . $dkp["kuip_id"] . "\">" . $dkp["kuip_pertanyaan"] . "</td>
+                                                                    " . $colkrej . "
+                                                                </tr>";
+                                            $i++;
+                                            $l++;
+                                            $flagp = 1;
+                                        } else {
+                                            $tpertanyaan .= "<tr " . $bgcolor . ">
+                                                                    <td align=\"center\" valign=\"center\" width=\"5%\"><p>" . $dkp["kuip_urutan"] . ".</p>
+                                                                        <input type=\"hidden\" name=\"kuipe_id[]\" value=\"" . $dkp["kuip_id"] . "\"></td>
+                                                                    <td valign=\"center\" colspan=\"" . $jmlcolspan . "\">" . $dkp["kuip_pertanyaan"] . "</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td colspan=\"" . $jmlcolspan . "\" ><textarea id=\"essay[" . $k . "]\" name=\"essay[]\" cols=\"90%\" rows=\"4\"></textarea></td>
+                                                                </tr>";
+                                            $k++;
+                                            $i++;
+                                            $flagp = 1;
+                                        }
+                                    }
+                                    $tpertanyaan = "<table border=\"0\" width=\"100%\" cellspacing=\"1\" cellpadding=\"5\" bgcolor=\"#DDDDDD\">
                                                                 <tr bgcolor=\"#CCCCCC\">
                                                                     <td align=\"center\" width=\"5%\"><b>No</b></td>
                                                                     <td align=\"center\" width=\"80%\"><b>Pertanyaan</b></td>
-                                                                    ".$colkre."
+                                                                    " . $colkre . "
                                                                 </tr>
-                                                                ".$tpertanyaan." ";
-                                        $tpertanyaan .= "</table>";
-                                    }
-                                    
-                                    
-                                    if($flagp==0){
-                                        $tpertanyaan = "";
-                                    }
-                                    if($flagk==0){
-                                        $kreteria = "";
-                                    }
-                                    
-                                    echo "<div class=\"panel panel-default\">
+                                                                " . $tpertanyaan . " ";
+                                    $tpertanyaan .= "</table>";
+                                }
+
+
+                                if ($flagp == 0) {
+                                    $tpertanyaan = "";
+                                }
+                                if ($flagk == 0) {
+                                    $kreteria = "";
+                                }
+
+                                echo "<div class=\"panel panel-default\">
                                                 <div class=\"panel-body\">
                                                     <div class=\"row\">
                                                         <div class=\"col-md-12\">
                                                             <form id=\"formKuesioner\" name=\"formKuesioner\" action=\"../../apps/kuesionerController.php?action=addData\" method=\"POST\">
-                                                                <h3>".$d["kui_header"]."</h3><hr />
-                                                                <input type=\"hidden\" id=\"kuisioner\" name=\"kuisioner\" value=\"".$d["kui_id"]."\" />
-                                                                <input type=\"hidden\" id=\"kuisioner\" name=\"usr_id\" value=\"".$dz["id"]."\" />
-                                                                ".$kreteria."
-                                                                ".$tpertanyaan."<br />
-                                                                ".$tessay."
+                                                                <h3>" . $d["kui_header"] . "</h3><hr />
+                                                                <input type=\"hidden\" id=\"kuisioner\" name=\"kuisioner\" value=\"" . $d["kui_id"] . "\" />
+                                                                <input type=\"hidden\" id=\"kuisioner\" name=\"usr_id\" value=\"" . $dz["id"] . "\" />
+                                                                " . $kreteria . "
+                                                                " . $tpertanyaan . "<br />
+                                                                " . $tessay . "
                                                                 <br />
                                                                 <input type=\"submit\" class=\"btn btn-primary\" value=\"Submit \"/>
                                                                 <input type=\"reset\" class=\"btn btn-default\"  value=\"Cancel\" />
@@ -252,7 +251,7 @@
                                                     </div>
                                                 </div>
                                             </div>";
-                                }
+                            }
                             ?>
                         </div>
                     </div>
@@ -267,8 +266,7 @@
                         <p>2022 &copy; Kamus Bahasa Enggano</p>
                     </div>
                     <div class="float-end">
-                        <p>Crafted with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a
-                                href="#">Team</a></p>
+                        <p>Crafted with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a href="#">Team</a></p>
                     </div>
                 </div>
             </footer>
@@ -278,9 +276,9 @@
     <script src="../../skins/mazer/demo/assets/js/bootstrap.bundle.min.js"></script>
 
     <script src="../../skins/mazer/demo/assets/vendors/toastify/toastify.js"></script>
-    
+
     <script src="../../skins/mazer/demo/assets/js/main.js"></script>
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </body>
 
 </html>

@@ -20,6 +20,18 @@
         
         if($cek > 0) {
             $data = mysqli_fetch_assoc($result);
+            for ($i=0; $i < $cek; $i++) { 
+                $id = $data['id'];
+                $username = $data['username'];
+                $password = $data['password'];
+                $nama = $data['nama'];
+                $status = $data['status'];
+                echo "id : $id <br>";
+                echo "username : $username <br>";
+                echo "password : $password <br>";
+                echo "nama : $nama <br>";
+                echo "status : $status <br>";
+            }
             //menyimpan session user, nama, status dan id login
             $_SESSION['username'] = $username;
             $_SESSION['nama'] = $data['nama'];

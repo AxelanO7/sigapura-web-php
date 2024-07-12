@@ -56,16 +56,12 @@ if (($action == "")) {
 function registerVisitor($request)
 {
     // mengaktifkan session php
-    session_start();
+    // session_start();
 
     // menghubungkan dengan koneksi
     include '../config/config.php';
-
-    $q = array();
-
-    $q[] = mysqli_query($koneksi, "INSERT INTO visitor (name, country_region, gender) VALUES 
-    ('" . $name . "','" . $country_region . "','" . $gender . "','" . $year_of_creation . "');") or die(mysqli_error($koneksi));
-
+    extract($request, EXTR_SKIP);
+    $q[] = mysqli_query($koneksi, "INSERT INTO visitor (name, country_region, gender, created_at, updated_at) VALUES ('" . $name . "','" . $country_region . "','" . $gender . "','" . date("Y-m-d H:i:s") . "','" . date("Y-m-d H:i:s") . "');") or die(mysqli_error($koneksi));
 
     // // menangkap data yang dikirim dari form
     // $username = $_POST['username'];
@@ -83,11 +79,14 @@ function registerVisitor($request)
     //     if($cek > 0) {
     //         $data = mysqli_fetch_assoc($result);
     //         //menyimpan session user, nama, status dan id login
-    $_SESSION['username'] = $username;
-    $_SESSION['nama'] = $data['nama'];
-    $_SESSION['status'] = "sudah_login";
-    $_SESSION['id_login'] = $data['id'];
-    header("location:../pages/visitor_crud/index.php");
+    // $_SESSION['username'] = $username;
+    // $_SESSION['nama'] = $data['nama'];
+    // $_SESSION['id_login'] = $data['id'];
+    $_SESSION['username_visitor'] = $username;
+    $_SESSION['nama_visitor'] = $data['nama'];
+    $_SESSION['id_login_visitor'] = $data['id'];
+    $_SESSION['status_visitor'] = "sudah_login";
+    header("location:../pages/visitor/main_page.php");
     // } 
     // else {
     //     header("location:../index.php?pesan=Gagal login data tidak ditemukan. Silahkan ulangi kembali!");
@@ -107,22 +106,25 @@ function loginVisitor($request)
     $country_region = $_POST['country_region'];
 
     //validasi
-    if ($username == "" || $_POST['country_region'] == "") {
-        header("location:../index.php?pesan=Nama dan ASal Negara tidak boleh kosong. Silahkan ulangi kembali!");
+    if ($name == "" || $country_region == "") {
+        header("location:../index.php?pesan=Nama dan Asal Negara tidak boleh kosong. Silahkan ulangi kembali!");
     } else {
         // menyeleksi data user dengan username dan password yang sesuai
-        $result = mysqli_query($koneksi, "SELECT * FROM visitor where name='$name' and country_region='$country_region' AND status='1' ");
+        $result = mysqli_query($koneksi, "SELECT * FROM visitor where name='$name' and country_region='$country_region' ");
 
         $cek = mysqli_num_rows($result);
 
         if ($cek > 0) {
             $data = mysqli_fetch_assoc($result);
             //menyimpan session user, nama, status dan id login
-            $_SESSION['username'] = $name;
-            $_SESSION['nama'] = $data['nama'];
-            $_SESSION['status'] = "sudah_login";
-            $_SESSION['id_login'] = $data['id'];
-            header("location:../pages/visitor_crud/index.php");
+            // $_SESSION['username'] = $name;
+            // $_SESSION['nama'] = $data['nama'];
+            // $_SESSION['id_login'] = $data['id'];
+            $_SESSION['username_visitor'] = $username;
+            $_SESSION['nama_visitor'] = $data['nama'];
+            $_SESSION['id_login_visitor'] = $data['id'];
+            $_SESSION['status_visitor'] = "sudah_login";
+            header("location:../pages/visitor/main_page.php");
         } else {
             header("location:../index.php?pesan=Gagal login data tidak ditemukan. Silahkan ulangi kembali!");
         }

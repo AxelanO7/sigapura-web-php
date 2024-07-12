@@ -12,7 +12,7 @@ include '../../config/config.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kamus Enggano</title>
+    <title>Sigapura</title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@ include '../../config/config.php';
                 <div class="sidebar-header">
                     <div class="d-flex justify-content-between">
                         <div class="logo">
-                            <!-- <a href="index.php"><img src="../../skins/mazer/demo/assets/images/logo/kamus_enggano.png" alt="Logo" srcset=""></a> -->
+                            <a href="index.php"><img src="../../skins/mazer/demo/assets/images/logo/sigapura.png" alt="Logo" srcset=""></a>
                         </div>
                         <div class="toggler">
                             <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -113,8 +113,7 @@ include '../../config/config.php';
                                 <div class="col-sm-12 text-center">
                                     <div class="alert alert-primary" style="margin-top:15px;"><?php echo $_GET['pesan']; ?></div>
                                 </div>
-                            <?php }
-                            ?>
+                            <?php } ?>
                             <table class="table table-striped" id="table1">
                                 <thead>
                                     <tr>
@@ -147,9 +146,7 @@ include '../../config/config.php';
                                                 <a href="javascript:void(0);" onclick="viewFormDelete('<?php echo $du["id"]; ?>')"><i class="bi bi-trash"></i> </a>
                                             </td>
                                         </tr>
-                                    <?php
-                                    }
-                                    ?>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>
@@ -160,7 +157,7 @@ include '../../config/config.php';
                 <section class="section">
                     <div class="card">
                         <div class="card-header">
-                            <div class="alert alert-primary">Data Visitor</div>
+                            <div class="alert alert-primary">Grafik Visitor</div>
                         </div>
                         <div class="card-body">
                             <div>
@@ -220,38 +217,6 @@ include '../../config/config.php';
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-        const ctx = document.getElementById('myChart');
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['November', 'December', 'January', 'February', 'March'],
-                datasets: [{
-                    label: 'Visitor',
-                    data: [
-                        <?php
-                        $jumlah_november = mysqli_query($koneksi, "select * from visitor where created_at='2021-11-01' and created_at='2021-11-30'");
-                        // count length result
-                        echo mysqli_num_rows($jumlah_november);
-                        // echo mysqli_num_rows($jumlah_november);
-                        ?>, , 19, 3, 5, 2, 3
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-
     <script src="../../skins/mazer/demo/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="../../skins/mazer/demo/assets/js/bootstrap.bundle.min.js"></script>
 
@@ -272,6 +237,107 @@ include '../../config/config.php';
         }
     </script>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('myChart');
+
+        // filter data by month from $du
+        var jan = 0;
+        var feb = 0;
+        var mar = 0;
+        var apr = 0;
+        var may = 0;
+        var jun = 0;
+        var jul = 0;
+        var aug = 0;
+        var sep = 0;
+        var oct = 0;
+        var nov = 0;
+        var dec = 0;
+
+        <?php
+        $qu = mysqli_query($koneksi, "SELECT * FROM visitor");
+        while ($du = mysqli_fetch_array($qu)) {
+            $month = date("m", strtotime($du["created_at"]));
+            if ($month == "01") {
+                echo "jan++;";
+            } elseif ($month == "02") {
+                echo "feb++;";
+            } elseif ($month == "03") {
+                echo "mar++;";
+            } elseif ($month == "04") {
+                echo "apr++;";
+            } elseif ($month == "05") {
+                echo "may++;";
+            } elseif ($month == "06") {
+                echo "jun++;";
+            } elseif ($month == "07") {
+                echo "jul++;";
+            } elseif ($month == "08") {
+                echo "aug++;";
+            } elseif ($month == "09") {
+                echo "sep++;";
+            } elseif ($month == "10") {
+                echo "oct++;";
+            } elseif ($month == "11") {
+                echo "nov++;";
+            } elseif ($month == "12") {
+                echo "dec++;";
+            }
+        }
+        ?>
+
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                    'July',
+                    'August',
+                    'September',
+                    'October',
+                    'November',
+                    'December'
+                ],
+                datasets: [{
+                    label: 'Visitor in Last 12 Month',
+                    data: [
+                        jan,
+                        feb,
+                        mar,
+                        apr,
+                        may,
+                        jun,
+                        jul,
+                        aug,
+                        sep,
+                        oct,
+                        nov,
+                        dec
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            },
+
+        });
+    </script>
+
 </body>
 
 </html>

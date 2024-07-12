@@ -1,10 +1,10 @@
 <?php
-    session_start();
-    if($_SESSION['status'] !="sudah_login"){
-        header("location:../errorpage/403.php");
-    }
-    $page = "list_kuesioner";
-    include '../../config/config.php';
+session_start();
+if ($_SESSION['status'] != "sudah_login") {
+    header("location:../errorpage/403.php");
+}
+$page = "list_kuesioner";
+include '../../config/config.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kamus Enggano</title>
+    <title>Sigapura</title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
                 <div class="sidebar-header">
                     <div class="d-flex justify-content-between">
                         <div class="logo">
-                            <!-- <a href="index.php"><img src="../../skins/mazer/demo/assets/images/logo/kamus_enggano.png" alt="Logo" srcset=""></a> -->
+                            <a href="index.php"><img src="../../skins/mazer/demo/assets/images/logo/sigapura.png" alt="Logo" srcset=""></a>
                         </div>
                         <div class="toggler">
                             <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
@@ -42,7 +42,7 @@
                 </div>
                 <div class="sidebar-menu">
                     <?php
-                        include '../layout/menu.php';
+                    include '../layout/menu.php';
                     ?>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
@@ -78,12 +78,12 @@
                             Data Stem
                         </div>
                         <div class="card-body">
-						
+
                             <?php
-                                if(isset($_GET['pesan'])){?>
-                                    <div class="col-sm-12 text-center">
-                                        <div class="alert alert-primary" style="margin-top:15px;"><?php echo $_GET['pesan']; ?></div>
-                                    </div>
+                            if (isset($_GET['pesan'])) { ?>
+                                <div class="col-sm-12 text-center">
+                                    <div class="alert alert-primary" style="margin-top:15px;"><?php echo $_GET['pesan']; ?></div>
+                                </div>
                             <?php }
                             ?>
                             <table class="table table-striped" id="table1">
@@ -96,19 +96,19 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                        $qu = mysqli_query($koneksi, "SELECT *,(SELECT name FROM users WHERE id=usr_id) as name FROM z_kuisioner_user") or die(mysqli_errno($koneksi));
-                                        while($du = mysqli_fetch_array($qu)){ ?>
-                                        
-                                            <tr>
-                                                <td><?php echo $du["name"] ?></td>
-                                                <td><?php echo $du["kuiu_date"] ?></td>
-                                                <td>
-                                                    <a href="viewData.php?usr_id=<?php echo $du["usr_id"];  ?>&kuiu_id=<?php echo $du["kuiu_id"]; ?>" title="View Data"><i class="bi bi-eye"></i> </a>
-                                                    <a href="../../apps/kuesionerController.php?action=deleteData&usr_id=<?php echo $du["usr_id"];  ?>&kuiu_id=<?php echo $du["kuiu_id"]; ?>" title="Delete Data"><i class="bi bi-trash"></i> </a>
-                                                </td>
-                                            </tr>
-                                    <?php    
-                                        }
+                                    $qu = mysqli_query($koneksi, "SELECT *,(SELECT name FROM users WHERE id=usr_id) as name FROM z_kuisioner_user") or die(mysqli_errno($koneksi));
+                                    while ($du = mysqli_fetch_array($qu)) { ?>
+
+                                        <tr>
+                                            <td><?php echo $du["name"] ?></td>
+                                            <td><?php echo $du["kuiu_date"] ?></td>
+                                            <td>
+                                                <a href="viewData.php?usr_id=<?php echo $du["usr_id"];  ?>&kuiu_id=<?php echo $du["kuiu_id"]; ?>" title="View Data"><i class="bi bi-eye"></i> </a>
+                                                <a href="../../apps/kuesionerController.php?action=deleteData&usr_id=<?php echo $du["usr_id"];  ?>&kuiu_id=<?php echo $du["kuiu_id"]; ?>" title="Delete Data"><i class="bi bi-trash"></i> </a>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
                                     ?>
                                 </tbody>
                             </table>
@@ -125,8 +125,7 @@
                         <p>2023 &copy; Kamus Bahasa Enggano</p>
                     </div>
                     <div class="float-end">
-                        <p>Crafted with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a
-                                href="#">Team</a></p>
+                        <p>Crafted with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a href="#">Team</a></p>
                     </div>
                 </div>
             </footer>
@@ -136,9 +135,9 @@
     <script src="../../skins/mazer/demo/assets/js/bootstrap.bundle.min.js"></script>
 
     <script src="../../skins/mazer/demo/assets/vendors/toastify/toastify.js"></script>
-    
+
     <script src="../../skins/mazer/demo/assets/js/main.js"></script>
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     </div>
 </body>
 
